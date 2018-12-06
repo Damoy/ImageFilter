@@ -29,6 +29,8 @@ Source image and processed images [source-p5-p8-p16].<br>
 | Skin          | [216,189,138] |
 | Yellow        | [216,215,143] |
 
+---------------------------------------
+
 <h3>Custom 8 colors palette</h3>
 
 | Filter color     | RGB value  |
