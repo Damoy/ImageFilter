@@ -1,0 +1,48 @@
+## Colors palettes definitions.
+## In order to add a new palette, please follow below indications.
+
+## Palette definition structure:
+## 
+## #palette
+## "{PaletteName}"
+## [ColorName1;Red1;Green1;Blue1] # First palette's color, RGB values
+## [ColorName2;Red2;Green2;Blue2] # Second palette's color, RGB values
+## ...
+
+#palette ## Example of 5 colors palette
+"p5"
+[DarkBurgundy;79;49;48]
+[Burgundy;80;140;215]
+[Orange;170;80;66]
+[Skin;216;189;138]
+[Yellow;216;215;143]
+
+#palette ## Example of 8 colors palette
+"p8"
+[Black;0;0;0]
+[Violet;85;65;95]
+[Gray;100;105;100]
+[Orange;215;115;85]
+[Blue;80;140;215]
+[Green;100;185;100]
+[Yellow;230;200;110]
+[White;220;245;255]
+
+#palette ## Example of 16 colors palette
+"p16"
+[Light Pink;232;204;210]
+[Light Beige;222;214;202]
+[Light LightGreen;203;211;187]
+[Light DarkGreen;171;193;185]
+[Light DarkBlue;156;171;177]
+[Pink;214;162;173]
+[Beige;195;181;159]
+[LightGreen;160;175;132]
+[DarkGreen;102;143;128]
+[DarkBlue;74;102;112]
+[Dark Pink;98;74;79]
+[Dark Beige;89;83;73]
+[Dark LightGreen;73;80;60]
+[Dark DarkGreen;47;65;59]
+[Dark DarkBlue;34;47;51]
+[Gray;100;105;100]

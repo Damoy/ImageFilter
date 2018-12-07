@@ -1,5 +1,21 @@
 # Image filter
 
+<h2><b>Version 0.2 - Palette plugin</h2></b>
+
+<h3>Adding your own colors palette</h3>
+<ul>
+    <li>[Option] | Create your own palette file at "./resources/palettes/".</li>
+    <li>Add your own palette definition (follow instructions at "./resources/palettes/palettes_examples.if") on your desired palette file.</li>
+</ul>
+
+<p float="left">
+    <div style="text-align:center">
+        <img src="resources/examples/ectoplasma_random_256-512colors.gif" width="450"/>
+    </div>
+</p>
+
+---------------------------------------
+
 <h2><b>Version 0.1</h2></b>
 
 <h3>Available palettes</h3>
@@ -70,6 +86,6 @@ Source image and processed images [source-p5-p8-p16].<br>
 ---------------------------------------
 
 <h2>[Try it out]</h2>
-    1. Put the desired images in "/resources/input/" <br>
+    1. Put the desired images in "/resources/input/".<br>
     2. Launch by double clicking on ImageFilter.jar.<br>
 3. Wait few seconds and enjoy processed images at "/resources/output" :)
