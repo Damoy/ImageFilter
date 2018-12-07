@@ -8,10 +8,8 @@
     <li>Add your own palette definition (follow instructions at "./resources/palettes/palettes_examples.if") on your desired palette file.</li>
 </ul>
 
-<p float="left">
-    <div style="text-align:center">
-        <img src="resources/examples/ectoplasma_random_256-512colors.gif" width="450"/>
-    </div>
+<p align="center">
+    <img src="resources/examples/ectoplasma_random_256-512colors.gif" width="450"/>
 </p>
 
 ---------------------------------------
