@@ -5,12 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import com.damoy.image.filter.core.ImageFilter;
+import com.damoy.image.filter.utils.Utils;
 
 public final class PaletteGenerator {
 
 	private final static Random SEED = new Random();
 	
-	@SuppressWarnings("unused")
 	private ImageFilter filter;
 	private int generationId;
 	
@@ -21,9 +21,12 @@ public final class PaletteGenerator {
 	
 	public List<Palette> generateRandomly(List<Palette> existingRandomPalettes, int palettesCount) {
 		List<Palette> newlyGenerated = new ArrayList<>();
+		int colorGenMin = filter.getConfig().getPaletteColorsMin();
+		int colorGenMax = filter.getConfig().getPaletteColorsMax();
 		
 		for(int i = 0; i < palettesCount; ++i) {
-			Palette generatedPalette = generatePaletteOf(existingRandomPalettes, i + 1, SEED.nextInt(256) + 256);
+			int colorsCount = colorGenMin == colorGenMax ? colorGenMax : Utils.irand(colorGenMin, colorGenMax);
+			Palette generatedPalette = generatePaletteOf(existingRandomPalettes, i + 1, colorsCount);
 			existingRandomPalettes.add(generatedPalette);
 			newlyGenerated.add(generatedPalette);
 		}
@@ -46,21 +49,4 @@ public final class PaletteGenerator {
 		return new Palette(paletteName, colors);
 	}
 	
-//	private int getPaletteId(List<Palette> existingRandomPalettes) {
-//		int maxId = -1;
-//		
-//		if(existingRandomPalettes.isEmpty())
-//			return maxId + 1;
-//
-//		Palette lastPalette = existingRandomPalettes.get(existingRandomPalettes.size() - 1);
-//		String paletteName = lastPalette.getName();
-//		String fullPaletteId = paletteName.split("\r")[0];
-//		String paletteId = fullPaletteId.substring(3, fullPaletteId.length() - 1);
-//		
-//		if(paletteId != null && !paletteId.isEmpty()) {
-//			maxId = Math.max(maxId, Integer.parseInt(paletteId));
-//		}
-//		
-//		return maxId + 1;
-//	}
 }

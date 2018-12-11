@@ -19,6 +19,17 @@ public final class PaletteWriter {
 	
 	public void write(List<Palette> palettes, String destFilePath) {
 		File file = new File(destFilePath);
+		
+		if(file.exists()) {
+			try {
+				PrintWriter pw = new PrintWriter(file);
+				pw.println("");
+				pw.close();
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		StringBuilder sb = new StringBuilder();
 		
 		for(int i = 0; i < palettes.size(); ++i) {

@@ -1,5 +1,40 @@
 # Image filter
 
+<h2><b>Version 0.3 - Launch configuration</h2></b>
+
+<h3>You can now provide command arguments in order to configure application behavior.</h3>
+<h4>Available arguments</h4>
+
+| Command name      | Command value example                      | Definition                           |
+| ----------------- | -----------------------------------------  |------------------------------------- |
+| finput            | resources/input/cube.png                   | Image file / folder to process       |
+| fpalette          | _auto                                      | Palettes file or folder to use       |
+| fgen              | resources/palettes/palettes_10random_4to16 | Palettes generation file output      |
+| pgen              | 10                                         | Number of palettes to generate       |
+| cgenMin           | 4                                          | Minimum colors number of one palette |
+| cgenMax           | 16                                         | Maximum colors number of one palette |
+
+<b>Complete command example:</b><br>
+
+<i><b>java -jar -finput resources/input/cube.png -fpalette _auto -pgen 10 -cgenMin 4 -cgenMax 16 -fgen resources/palettes/palettes_10_random_4to16.if</i></b>
+
+Above command will make the application to:
+<ul>
+    <li>generate 10 color palettes</li>
+        <ul>
+            <li>each palette with a minimum of 4 colors</li>
+            <li>each palette with a maximum of 16 colors</li>
+        </ul>
+    <li>use "palettes_10_random_4to16.if" file as palettes generation output file</li>
+    <li>process "cube.png" image using generated palettes only</li>
+</ul>
+
+<p align="center">
+    <img src="resources/examples/cube_random_4-16colors.gif" width="250"/>
+</p>
+
+---------------------------------------
+
 <h2><b>Version 0.2 - Palette plugin</h2></b>
 
 <h3>Adding your own colors palette</h3>

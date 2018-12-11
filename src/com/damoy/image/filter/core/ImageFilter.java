@@ -14,6 +14,7 @@ import com.damoy.image.filter.core.palette.Palette;
 import com.damoy.image.filter.core.palette.PaletteGenerator;
 import com.damoy.image.filter.core.palette.PaletteParser;
 import com.damoy.image.filter.core.palette.PaletteWriter;
+import com.damoy.image.filter.utils.AppConfig;
 import com.damoy.image.filter.utils.Utils;
 
 /**
@@ -23,15 +24,15 @@ import com.damoy.image.filter.utils.Utils;
  */
 public final class ImageFilter {
 
+	private AppConfig config;
 	private PaletteGenerator generator;
 	private PaletteParser parser;
 	private PaletteWriter writer;
 	private List<Palette> palettes;
 	private List<Palette> randomPalettes;
 	
-	public ImageFilter() {}
-	
-	public ImageFilter build() {
+	public ImageFilter(AppConfig inconfig) {
+		config = inconfig;
 		palettes = new ArrayList<>();
 		randomPalettes = new ArrayList<>();
 		
@@ -39,17 +40,39 @@ public final class ImageFilter {
 		parser = new PaletteParser(this);
 		writer = new PaletteWriter(this);
 		
-		for(String paletteFilePath : Utils.getPalettesFilesPaths()) {
-			List<Palette> parsedPalettes = parser.parsePalettes(paletteFilePath);
-			palettes.addAll(parsedPalettes);
-			if(paletteFilePath.equals(Utils.getRandomPalettesFilePath()))
-				randomPalettes = parsedPalettes;
+		generatePalettes();
+		buildPalettes();
+	}
+	
+	private void generatePalettes() {
+		if(config.isPaletteGeneration()) {
+			List<Palette> generated = generator.generateRandomly(randomPalettes, config.getPaletteGenerationCount());
+			writer.write(generated, config.getPaletteGenerationFileOutput());
+		}
+	}
+	
+	private void buildPalettes() {
+		File file = new File(config.getPaletteFileOrFolderToUse());
+		
+		if(!file.exists())
+			throw new IllegalStateException("Unknown state, should not happen.");
+		
+		if(file.isDirectory()) {
+			for(String paletteFilePath : Utils.getFiles(file.getPath()))
+				buildPaletteFromFilePath(paletteFilePath);
+		} else {
+			buildPaletteFromFilePath(file.getPath());
 		}
 		
 		if(randomPalettes == null)
 			randomPalettes = new ArrayList<>();
-		
-		return this;
+	}
+	
+	private void buildPaletteFromFilePath(String paletteFilePath) {
+		List<Palette> parsedPalettes = parser.parsePalettes(paletteFilePath);
+		palettes.addAll(parsedPalettes);
+		if(paletteFilePath.equals(Utils.getRandomPalettesFilePath()))
+			randomPalettes = parsedPalettes;
 	}
 	
 	/**
@@ -63,16 +86,15 @@ public final class ImageFilter {
 		
 		Utils.logn(">> Image to process: " + input);
 		
-		String[] splitByDot = input.split("\\.");
+		String[] splitByDot = fileName.split("\\.");
 		
-		if(splitByDot.length != 3) {
-			Utils.logn("!! Image format should be inquired.");
-			return;
+		if(splitByDot.length != 2) {
+			throw new IllegalArgumentException("!! Image format should be inquired.");
 		}
 		
-		String format = splitByDot[2].trim();
+		String format = splitByDot[1].trim();
 		Utils.logn(">> Image format: " + format);
-		Utils.checkFormat(format);
+		Utils.validateFormat(format);
 		
 		try {
 			BufferedImage sourceImage = ImageIO.read(new File(input));
@@ -80,7 +102,13 @@ public final class ImageFilter {
 			Utils.logn(">> Image processed !");
 			
 			String resultsFolderPath = "./resources/output/" + fileName.split("\\.")[0] + "/";
-			new File(resultsFolderPath).mkdirs();
+			File resultsFolder = new File(resultsFolderPath);
+			
+			if(resultsFolder.exists()) {
+				Utils.deleteFolderContent(resultsFolder);
+			}
+			
+			resultsFolder.mkdirs();
 			
 			// first copy the source image (in order for the user to compare outputs)
 			ImageIO.write(sourceImage, format, new File(resultsFolderPath + "source_" + fileName));
@@ -103,10 +131,10 @@ public final class ImageFilter {
 		for(int i = 0; i < processedImages.length; ++i) 
 			processedImages[i] = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
 		
-			for(int i = 0; i < processedImages.length; ++i)
-				for(int y = 0; y < image.getHeight(); ++y)
-					for(int x = 0; x < image.getWidth(); ++x)
-						processedImages[i].setRGB(x, y, palettes.get(i).nearestColor(new Color(image.getRGB(x, y))).getColor().getRGB());
+		for(int i = 0; i < processedImages.length; ++i)
+			for(int y = 0; y < image.getHeight(); ++y)
+				for(int x = 0; x < image.getWidth(); ++x)
+					processedImages[i].setRGB(x, y, palettes.get(i).nearestColor(new Color(image.getRGB(x, y))).getColor().getRGB());
 		
 		return processedImages;
 	}
@@ -119,9 +147,8 @@ public final class ImageFilter {
 		return randomPalettes;
 	}
 	
-	public void generationRandomPalettesOnRandomFile(int palettesCount) {
-		List<Palette> generated = generator.generateRandomly(randomPalettes, palettesCount);
-		writer.write(generated, Utils.getRandomPalettesFilePath());
+	public AppConfig getConfig() {
+		return config;
 	}
 
 	public PaletteGenerator getGenerator() {
