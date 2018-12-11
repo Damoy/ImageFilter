@@ -16,7 +16,7 @@
 
 <b>Complete command example:</b><br>
 
-<i><b>java -jar -finput resources/input/cube.png -fpalette _auto -pgen 10 -cgenMin 4 -cgenMax 16 -fgen resources/palettes/palettes_10_random_4to16.if</i></b>
+<i><b>java -jar ImageFilter.jar -finput resources/input/cube.png -fpalette _auto -pgen 10 -cgenMin 4 -cgenMax 16 -fgen resources/palettes/palettes_10_random_4to16.if</i></b>
 
 Above command will make the application to:
 <ul>
